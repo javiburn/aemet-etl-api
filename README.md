@@ -17,3 +17,5 @@ Este proyecto en Python permite extraer datos climáticos diarios de la API de A
 ### Lectura
 
 Solo determinados usuarios tienen acceso a la vista del proyecto original en Google Cloud, si eres uno de ellos puedes acceder a ellos a través del siguiente enlace:
+- Proyecto Google Cloud: https://console.cloud.google.com/welcome/new?authuser=2&project=data-426015
+- Dashboard: https://lookerstudio.google.com/reporting/f80ccbcb-e762-4721-975f-4e676e0a88ce
