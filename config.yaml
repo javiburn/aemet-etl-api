@@ -1,0 +1,7 @@
+# config.yaml
+max_delta_time: "1 day"  # Intervalo de tiempo máximo para la carga incremental
+bigquery_project_id: "data-426015"
+bigquery_dataset_id: "data_etl"
+bigquery_table_id: "aemet"
+idema_file: "docs/idema_list.txt"  # Ruta al archivo .txt que contiene la lista de idemas
+start_date: "2023-06-01T01:00:00UTC"  # Fecha desde la cual iniciar la carga incremental

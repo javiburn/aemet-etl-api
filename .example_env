@@ -1,0 +1,4 @@
+API_KEY=your_key
+GOOGLE_APPLICATION_CREDENTIALS=path/to/your/creadentials
+PROJECT_ID=your_project_id
+SERVICE_ACCOUNT_EMAIL=mail@mail.com

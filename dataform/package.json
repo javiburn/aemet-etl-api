@@ -1,0 +1,15 @@
+{
+    "name": "dataform-project",
+    "version": "1.0.0",
+    "description": "A Dataform project",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@dataform/core": "^1.0.0"
+    }
+  }
+  

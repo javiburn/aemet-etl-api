@@ -1,0 +1,5 @@
+{
+    "warehouse": "bigquery",
+    "defaultSchema": "data_etl",
+    "assertionSchema": "dataform_assertions"
+  }

@@ -1,0 +1,33 @@
+defaultDatabase: "your_default_database"
+defaultSchema: definitions/schema.sqlx   # Replace with your actual schema name
+dataformCoreVersion: latest       # Specify the version of Dataform Core to use
+assertionSchema: "assertions"
+defaultLocation: "US"
+
+# Optional settings
+defaultConfig:
+  tags: ["example_tag"]
+  typePrefix: "df_"   # Prefix for dataset names
+  typeSuffix: "_temp" # Suffix for temporary dataset names
+
+# Default configurations for various operations
+defaultIncrementalConfig:
+  updateSchema: true
+  primaryKey: "id"
+  uniqueKey: ["id"]
+
+# Configure scheduling and dependencies
+schedules:
+  daily_schedule:
+    cron: "0 0 * * *"  # Run at midnight every day
+    tags: ["daily"]
+  hourly_schedule:
+    cron: "0 * * * *"  # Run at the top of every hour
+    tags: ["hourly"]
+
+# Optional: Email notifications on job completion
+notifications:
+  onSuccess: 
+    emails: ["your_email@example.com"]
+  onFailure: 
+    emails: ["your_email@example.com"]

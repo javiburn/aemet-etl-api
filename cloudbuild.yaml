@@ -1,0 +1,54 @@
+steps:
+  # Step 0: Load environment variables from .env file
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -o allexport
+        source .env
+        set +o allexport
+
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-southwest1-docker.pkg.dev/$PROJECT_ID/elt-data/elt-data', '.']
+
+  # Step 2: Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-southwest1-docker.pkg.dev/$PROJECT_ID/elt-data/elt-data']
+
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'elt-data'
+      - '--image=europe-southwest1-docker.pkg.dev/$PROJECT_ID/elt-data/elt-data'
+      - '--platform=managed'
+      - '--region=europe-southwest1'
+      - '--timeout=60m'
+      - '--allow-unauthenticated'  # Ensure the service is publicly accessible
+
+    # Step 4: Check if Cloud Scheduler job exists and create/update if necessary
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if gcloud scheduler jobs describe daily-aemet-api-call --project=$PROJECT_ID --format='value(name)' &>/dev/null; then
+          echo "Job 'daily-aemet-api-call' already exists. Skipping creation."
+        else
+          gcloud scheduler jobs create http daily-aemet-api-call \
+            --schedule='0 1 * * *' \
+            --time-zone='UTC' \
+            --http-method='POST' \
+            --uri='https://elt-data-va6grii5ja-no.a.run.app/trigger' \
+            --oidc-service-account-email=$SERVICE_ACCOUNT_EMAIL \
+            --headers='Content-Type=application/json' \
+            --message-body='{}' \
+            --location='europe-west1' \
+            --project=$PROJECT_ID
+        fi
+
+options:
+  logging: CLOUD_LOGGING_ONLY  # Use this option to specify logging behavior

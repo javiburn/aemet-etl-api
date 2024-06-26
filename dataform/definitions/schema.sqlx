@@ -1,0 +1,53 @@
+-- config/schemas/schema.sqlx
+
+config {
+  type: "view",
+  schema: "data_etl",
+  name: "aemet_transformed"
+}
+
+DECLARE schema STRING;
+DECLARE table_name STRING;
+
+schema := "data_etl";
+table_name := "aemet";
+
+CREATE OR REPLACE VIEW ${schema}.${table_name} AS (
+  SELECT
+    fecha,
+    indicativo,
+    nombre,
+    provincia,
+    altitud,
+    tmed,
+    prec,
+    tmin,
+    horatmin,
+    tmax,
+    horatmax,
+    dir,
+    velmedia,
+    racha,
+    horaracha,
+    sol,
+    presmax,
+    horapresmax,
+    presmin,
+    horapresmin,
+    hrmedia,
+    hrmax,
+    horahrmax,
+    hrmin,
+    horahrmin
+  FROM
+    ${ref("my_temp_table")}  -- Nombre temporal de la tabla donde se encuentran los datos originales
+);
+
+operations {
+  type: "inline",
+  statements: [
+    `let functions = require("functions");
+     dataframe = functions.convert_columns_to_correct_type(dataframe);
+     console.log("Columns converted to correct types");`
+  ]
+}
